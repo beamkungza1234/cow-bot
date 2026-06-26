@@ -51,7 +51,7 @@ export default class Bot extends Client {
       }
 
       await new Promise<void>(resolve => {
-         this.once('ready', () => resolve());
+         this.once('clientReady', () => resolve());
       });
    }
 
