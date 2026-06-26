@@ -9,7 +9,7 @@
       "removeComments": true,
       "preserveConstEnums": true,
       "esModuleInterop": true,
-      "declaration": true
+      "declaration": false
    },
    "include": ["**/*.ts", "**/*.js"],
    "exclude": ["node_modules"]

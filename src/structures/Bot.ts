@@ -1,10 +1,10 @@
-import {Client, ClientOptions, Collection, Routes, SlashCommandBuilder} from 'discord.js';
+import {Client, ClientOptions, Collection, Routes, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder, SlashCommandSubcommandsOnlyBuilder} from 'discord.js';
 import {readdirSync} from 'node:fs';
 import {join, parse} from 'node:path';
 
 export interface Command {
    enable: boolean;
-   data: SlashCommandBuilder;
+   data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
    execute(...args: unknown[]): Promise<void> | void;
 }
 
