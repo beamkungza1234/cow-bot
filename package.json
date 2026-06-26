@@ -12,6 +12,7 @@
    "dependencies": {
       "@discordjs/rest": "^2.6.1",
       "discord.js": "^14.26.4",
+      "ioredis": "^5.11.1",
       "node-cron": "^4.5.0",
       "rss-parser": "^3.13.0",
       "sucrase": "^3.35.1"

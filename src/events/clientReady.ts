@@ -1,7 +1,6 @@
 import config from '../config';
 import client from '../index';
-import {getLatestVideo} from '../services/youtube';
-import {getLastVideoId, setLastVideoId} from '../utils/youtubeStore';
+import {getLastVideoId, getLatestVideo, setLastVideoId} from '../services/youtube';
 import {EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, TextChannel, Colors, ComponentType, Guild} from 'discord.js';
 import cron from 'node-cron';
 
