@@ -112,18 +112,7 @@ export default {
       }
 
       const messages = await channel.messages.fetch({limit: 20});
-
-      const exists = messages.some(
-         message =>
-            message.author.id === client.user?.id &&
-            message.components.some(row => {
-               if (row.type !== ComponentType.ActionRow) {
-                  return false;
-               }
-
-               return row.components.some(component => component.type === ComponentType.Button && component.customId === 'register');
-            }),
-      );
+      const exists = messages.some(message => message.author.id === client.user?.id);
 
       if (!exists) {
          return;
