@@ -10,6 +10,11 @@ const client = new Bot({
    },
 });
 
+client.start().catch(err => {
+   console.error('Failed to start bot:', err);
+   process.exit(1);
+});
+
 process.on('unhandledRejection', console.error);
 process.on('uncaughtException', console.error);
 
