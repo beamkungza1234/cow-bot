@@ -106,15 +106,8 @@ export default {
    },
 
    async setupRegisterChannel(guild: Guild) {
-      const channel = guild.channels.cache.get(config.registerChannelId) as TextChannel | undefined;
+      const channel = guild.channels.cache.get(config.channelIds.register) as TextChannel | undefined;
       if (!channel?.isTextBased()) {
-         return;
-      }
-
-      const messages = await channel.messages.fetch({limit: 20});
-      const exists = messages.some(message => message.author.id === client.user?.id);
-
-      if (!exists) {
          return;
       }
 
@@ -124,9 +117,11 @@ export default {
          new ButtonBuilder().setCustomId('register').setLabel('แนะนำตัวเอง').setStyle(ButtonStyle.Primary),
       );
 
-      await channel.send({
-         embeds: [embed],
-         components: [row],
-      });
+      const messages = await channel.messages.fetch({limit: 1}).catch(() => {});
+      const message = messages?.first();
+
+      const payload = {embeds: [embed], components: [row]};
+
+      await (message ? message.edit(payload) : channel.send(payload));
    },
 };
