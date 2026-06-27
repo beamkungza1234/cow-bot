@@ -13,6 +13,7 @@
       "@cerebras/cerebras_cloud_sdk": "^1.64.1",
       "@discordjs/rest": "^2.6.1",
       "@napi-rs/canvas": "^1.0.1",
+      "@tavily/core": "^0.7.6",
       "discord.js": "^14.26.4",
       "ioredis": "^5.11.1",
       "node-cron": "^4.5.0",
