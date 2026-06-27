@@ -12,7 +12,7 @@
    "dependencies": {
       "@cerebras/cerebras_cloud_sdk": "^1.64.1",
       "@discordjs/rest": "^2.6.1",
-      "canvas": "^3.2.3",
+      "@napi-rs/canvas": "^1.0.1",
       "discord.js": "^14.26.4",
       "ioredis": "^5.11.1",
       "node-cron": "^4.5.0",

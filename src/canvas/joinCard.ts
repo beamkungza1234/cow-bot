@@ -1,9 +1,9 @@
 import {roundedRect} from '../utils/canvasUtil';
-import {createCanvas, loadImage, registerFont} from 'canvas';
+import {createCanvas, loadImage, GlobalFonts} from '@napi-rs/canvas';
 import {AttachmentBuilder, GuildMember} from 'discord.js';
 import path from 'node:path';
 
-registerFont(path.join(__dirname, '../../assets/fonts/Itim-Regular.ttf'), {family: 'TH-Custom'});
+GlobalFonts.registerFromPath(path.join(__dirname, '../../assets/fonts/Itim-Regular.ttf'), 'TH-Custom');
 
 export async function generateCard(member: GuildMember, titleText: string): Promise<AttachmentBuilder> {
    const canvas = createCanvas(700, 250);
@@ -49,7 +49,6 @@ export async function generateCard(member: GuildMember, titleText: string): Prom
       );
 
       ctx.save();
-      ctx.beginPath();
       roundedRect(ctx, avatarX, avatarY, avatarSize, avatarSize, radius);
       ctx.clip();
 
@@ -60,7 +59,6 @@ export async function generateCard(member: GuildMember, titleText: string): Prom
       console.error('Failed to load avatar:', error);
 
       ctx.fillStyle = '#555';
-      ctx.beginPath();
       roundedRect(ctx, avatarX, avatarY, avatarSize, avatarSize, radius);
       ctx.fill();
    }
