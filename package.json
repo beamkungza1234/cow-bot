@@ -10,7 +10,9 @@
       "node": ">=24"
    },
    "dependencies": {
+      "@cerebras/cerebras_cloud_sdk": "^1.64.1",
       "@discordjs/rest": "^2.6.1",
+      "canvas": "^3.2.3",
       "discord.js": "^14.26.4",
       "ioredis": "^5.11.1",
       "node-cron": "^4.5.0",
@@ -21,11 +23,11 @@
       "@trivago/prettier-plugin-sort-imports": "^6.0.2",
       "@typescript-eslint/eslint-plugin": "^8.62.0",
       "@typescript-eslint/parser": "^8.62.0",
-      "eslint": "^10.5.0",
+      "eslint": "^8.57.1",
       "eslint-config-prettier": "^10.1.8",
       "eslint-plugin-prettier": "^5.5.6",
-      "eslint-plugin-unicorn": "^69.0.0",
-      "prettier": "^3.8.4",
+      "eslint-plugin-unicorn": "^56.0.1",
+      "prettier": "^3.8.5",
       "typescript": "^5.9.3"
    }
 }
