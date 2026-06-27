@@ -1,35 +1,41 @@
-import { EmbedBuilder } from 'discord.js'
-import { generateCard } from '../utils/joinCard'
-
-const CHANNEL_ID = '1520365739817697392'
+import config from '../config';
+import {generateCard} from '../canvas/joinCard';
+import {EmbedBuilder, GuildMember} from 'discord.js';
 
 export default {
-    enable: true,
-    once: false,
-    async execute(member) {
-        const totalMembers = member.guild.memberCount;
-        const channel = member.guild.channels.cache.get(CHANNEL_ID)
-        const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 256 });
-        if (!channel) return
+   enable: true,
+   once: false,
 
-        try {
-            const attachment = await generateCard(member, 'ยินดีต้อนรับสู่ Server')
-            const embed = new EmbedBuilder()
-                .setColor('#2596be')
-                .setTitle("🐮 ยินดีต้อนรับสู่ Captaincow's Resident")
-                .setDescription(`สมาชิกใหม่ -> ${member}\nจำนวนสมาชิกปัจจุบัน -> ${totalMembers}\nแนะนำตนเองได้ที่ - [กดตรงนี้](https://discord.com/channels/997523369337561170/1517582344926662729) `)
-                .setImage('attachment://card-image.png')
-                .setThumbnail(avatarURL)
-                .setTimestamp()
+   async execute(member: GuildMember) {
+      const channel = member.guild.channels.cache.get(config.channelIds.welcome);
+      if (!channel?.isSendable()) {
+         return;
+      }
 
-            await channel.send({ 
-                content: `สวัสดีครับคุณ <@${member.id}>!`, 
-                embeds: [embed], 
-                files: [attachment] 
-            });
+      try {
+         const attachment = await generateCard(member, 'ยินดีต้อนรับสู่ Server');
 
-        } catch (e) {
-            console.log('Cant send embed', e)
-        }
-    }
-}
+         await channel.send({
+            content: `สวัสดีครับคุณ ${member}!`,
+            embeds: [
+               new EmbedBuilder()
+                  .setColor(0x25_96_be)
+                  .setTitle(`🐮 ยินดีต้อนรับสู่ ${member.guild.name}`)
+                  .setDescription(
+                     [
+                        `สมาชิกใหม่ -> ${member}`,
+                        `จำนวนสมาชิกปัจจุบัน -> ${member.guild.memberCount}`,
+                        'แนะนำตนเองได้ที่ - [กดตรงนี้](https://discord.com/channels/997523369337561170/1517582344926662729)',
+                     ].join('\n'),
+                  )
+                  .setThumbnail(member.displayAvatarURL({extension: 'png', size: 256}))
+                  .setImage('attachment://card-image.png')
+                  .setTimestamp(),
+            ],
+            files: [attachment],
+         });
+      } catch (error) {
+         console.error('Failed to send welcome message:', error);
+      }
+   },
+};
