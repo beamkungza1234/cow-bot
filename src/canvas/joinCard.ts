@@ -9,42 +9,63 @@ export async function generateCard(member: GuildMember, titleText: string): Prom
    const canvas = createCanvas(700, 250);
    const ctx = canvas.getContext('2d');
 
+   ctx.imageSmoothingEnabled = true;
+
+   // bg
    try {
-      const bgPath = path.join(__dirname, '../assets/images/beach_bg.png');
-      const background = await loadImage(bgPath);
+      const background = await loadImage(path.join(__dirname, '../../assets/images/beach_bg.png'));
       ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
    } catch (error) {
-      console.log(`Load image failed ${error}`);
+      console.error('Failed to load background:', error);
       ctx.fillStyle = '#2c2f33';
-      ctx.fillRect(0, 0, canvas.width, canvas.height); // when load image failed
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
    }
 
-   // draw
+   // bg overlay
+   ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+   // title
+   ctx.fillStyle = '#ffffff';
    ctx.font = '28px "TH-Custom"';
-   ctx.fillStyle = '#ffffff';
-   ctx.fillText(titleText, 220, 90);
+   ctx.fillText(titleText, 220, 95);
 
+   // username
    ctx.font = 'bold 36px "TH-Custom"';
-   ctx.fillStyle = '#ffffff';
-   ctx.fillText(member.user.username, 220, 150);
+   ctx.fillText(member.user.username, 220, 155);
 
-   ctx.save(); // Draw pfp
-
-   const x = 55;
-   const y = 65;
-   const width = 120;
-   const height = 120;
+   // ava
+   const avatarX = 55;
+   const avatarY = 65;
+   const avatarSize = 120;
    const radius = 20;
 
-   // Rounded Square
-   roundedRect(ctx, x, y, width, height, radius);
+   try {
+      const avatar = await loadImage(
+         member.user.displayAvatarURL({
+            extension: 'png',
+            size: 256,
+         }),
+      );
 
-   ctx.clip();
+      ctx.save();
+      ctx.beginPath();
+      roundedRect(ctx, avatarX, avatarY, avatarSize, avatarSize, radius);
+      ctx.clip();
 
-   const avatarURL = member.user.displayAvatarURL({extension: 'jpg', size: 256});
-   const avatar = await loadImage(avatarURL);
-   ctx.drawImage(avatar, 55, 65, 120, 120);
-   ctx.restore();
+      ctx.drawImage(avatar, avatarX, avatarY, avatarSize, avatarSize);
 
-   return new AttachmentBuilder(canvas.toBuffer(), {name: 'card-image.png'});
+      ctx.restore();
+   } catch (error) {
+      console.error('Failed to load avatar:', error);
+
+      ctx.fillStyle = '#555';
+      ctx.beginPath();
+      roundedRect(ctx, avatarX, avatarY, avatarSize, avatarSize, radius);
+      ctx.fill();
+   }
+
+   return new AttachmentBuilder(canvas.toBuffer('image/png'), {
+      name: 'card-image.png',
+   });
 }
